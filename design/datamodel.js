@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-// question collection
+// questions
 const questionSchema = new Schema({
     product_id: {
       type: Number
@@ -27,7 +27,7 @@ const questionSchema = new Schema({
     },
 })
 
- // answer collection
+ // answers
 const answerSchema = new Schema({
   question_id: {
     type: Number
@@ -52,7 +52,7 @@ const answerSchema = new Schema({
   },
 })
 
-// photo collection
+// photos
 const photoSchema = new Schema({
   answer_id: {
     type: Number

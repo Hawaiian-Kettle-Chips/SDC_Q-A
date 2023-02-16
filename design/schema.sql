@@ -3,34 +3,34 @@
 DROP DATABASE IF EXISTS qna_api;
 CREATE DATABASE qna_api;
 
-USE qna_api;
+\c qna_api;
 
-CREATE TABLE 'questions' {
-  question_id PRIMARY KEY INT,
+CREATE TABLE questions {
+  id SERIAL PRIMARY KEY,
   product_id INT NOT NULL,
-  asker_name VARCHAR NOT NULL,
-  question_body VARCHAR NOT NULL,
-  question_date DATE NOT NULL,
-  question_helpfulness INT DEFAULT 0,
-  reported INT DEFAULT 0
-  FOREIGN KEY (questions_id) REFERENCES answers(questions_id)
-}
-
-CREATE TABLE 'answers' {
-  answer_id PRIMARY KEY INT,
-  question_id INT NOT NULL,
-  answerer_name VARCHAR NOT NULL,
   body VARCHAR NOT NULL,
-  answer_date DATE NOT NULL,
-  helpfulness INT DEFAULT 0,
-  reported INT DEFAULT 0
-  FOREIGN KEY (questions_id) REFERENCES questions(questions_id)
-  FOREIGN KEY (answers_id) REFERENCES photos(answers_id)
+  date_written DATE NOT NULL,
+  asker_name VARCHAR NOT NULL,
+  asker_email VARCHAR NOT NULL,
+  reported BOOLEAN DEFAULT FALSE,
+  helpful INT DEFAULT 0
 }
 
-CREATE TABLE 'photos' {
-  photo_id SERIAL PRIMARY KEY,
+CREATE TABLE answers {
+  id SERIAL PRIMARY KEY,
+  question_id INT NOT NULL,
+  body VARCHAR NOT NULL,
+  date_written DATE NOT NULL,
+  answerer_name VARCHAR NOT NULL,
+  answerer_email VARCHAR NOT NULL,
+  reported BOOLEAN DEFAULT FALSE,
+  helpful INT DEFAULT 0
+  FOREIGN KEY (question_id) REFERENCES questions(id)
+}
+
+CREATE TABLE photos {
+  id SERIAL PRIMARY KEY,
   answer_id INT NOT NULL,
-  url VARCHAR NOT NULL
-  FOREIGN KEY (answers_id) REFERENCES answers(answers_id)
+  url VARCHAR
+  FOREIGN KEY (answers_id) REFERENCES answers(id)
 }
