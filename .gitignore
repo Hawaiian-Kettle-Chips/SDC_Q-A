@@ -1,3 +1,4 @@
 # GIT IGNORE
 node_modules
 .env
+data
