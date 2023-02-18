@@ -1,20 +1,21 @@
 require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
-// require router
-// require db
+const router = require('./router.js');
+const db = require('./postgres/index.js');
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use('/', router);
 
 const PORT = process.env.PORT;
 
-app.listen(process.env.PORT, (error) => {
+app.listen(PORT, (error) => {
   if (error) {
     console.error(error);
   } else {
-    console.info(`LISTENING AT PORT: ${process.env.PORT}`)
+    console.info(`LISTENING AT PORT: ${PORT}`)
   }
 });
