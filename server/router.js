@@ -5,6 +5,6 @@ router.get('/', (req, res) => {
   res.status(200).send('Howdy');
 })
 
-router.get('/qa/questions', controller.getAllQuestionsByProductId);
+router.get('/qa/questions', controller.getQuestionsByProductId);
 
 module.exports = router;
