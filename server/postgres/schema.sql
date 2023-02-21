@@ -6,7 +6,7 @@ CREATE DATABASE qna_api;
 \c qna_api;
 
 CREATE TABLE questions(
-  id INT PRIMARY KEY NOT NULL,
+  id SERIAL PRIMARY KEY,
   product_id INT NOT NULL,
   body VARCHAR NOT NULL,
   date_written BIGINT NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE questions(
 );
 
 CREATE TABLE answers(
-  id INT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   question_id INT REFERENCES questions(id),
   body VARCHAR NOT NULL,
   date_written BIGINT NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE answers(
 );
 
 CREATE TABLE photos(
-  id INT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   answer_id INT REFERENCES answers(id),
   url VARCHAR
 );
@@ -37,7 +37,16 @@ CREATE TABLE photos(
 \COPY answers FROM 'data/answers.csv' DELIMITER ',' csv header;
 \COPY photos FROM 'data/answers_photos.csv' DELIMITER ',' csv header;
 
--- \COPY questions FROM 'data/test_questions.csv' DELIMITER ',' csv header;
--- \COPY questions(id, product_id, body, date_written, asker_name, asker_email, reported, helpful)
---   FROM 'data/test_questions.csv' DELIMITER ','
---   NULL AS 'null' CSV HEADER;
+-- change type of date_written column to timestamp, can store ISO times in date_written now
+-- Maybe use ETL for this? This is ELT...
+ALTER TABLE answers ALTER COLUMN date_written TYPE TIMESTAMP USING to_timestamp(date_written/1000);
+ALTER TABLE questions ALTER COLUMN date_written TYPE TIMESTAMP USING to_timestamp(date_written/1000);
+
+SELECT setval('questions_id_seq', (SELECT MAX(id) FROM questions));
+SELECT setval('answers_id_seq', (SELECT MAX(id) FROM answers));
+SELECT setval('photos_id_seq', (SELECT MAX(id) FROM photos));
+
+-- Create indexes on what where condition is called on: product_id, question_id, and answer_id
+CREATE INDEX product_id_index ON questions(product_id);
+CREATE INDEX question_id_index ON answers(question_id);
+CREATE INDEX answer_id_index ON photos(answer_id);
