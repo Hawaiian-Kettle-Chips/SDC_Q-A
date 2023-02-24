@@ -35,7 +35,7 @@ export default function () {
 
   const randomQuestion = getRandomIntInclusive(950000, 1000011);
 
-  http.get(`http://localhost:3001/qa/questions?product_id=${randomQuestion}`);
+  http.get(`http://35.166.81.113:3001/qa/questions?product_id=${randomQuestion}`);
   sleep(1);
 }
 
