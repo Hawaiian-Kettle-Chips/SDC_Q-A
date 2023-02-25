@@ -3,7 +3,7 @@ const router = require('express').Router();
 const controller = require('./controller');
 
 router.get('/', (req, res) => {
-  res.sendStatus(204);
+  res.sendStatus(200);
 });
 
 router.get(`/${process.env.LOADER_IO}`, (req, res) => {
