@@ -2,10 +2,6 @@ require ('dotenv').config();
 const router = require('express').Router();
 const controller = require('./controller');
 
-router.get('/', (req, res) => {
-  res.status(200).send('Howdy');
-});
-
 router.get(`/${process.env.LOADER_IO}`, (req, res) => {
   res.send(process.env.LOADER_IO);
 });
